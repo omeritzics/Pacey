@@ -155,64 +155,11 @@ jobs:
           # Build AppImage using extracted tool
           ./appimagetool/AppRun AppImageDir Pacey-x86_64.AppImage
 
-      - name: Create Flatpak
-        run: |
-          # Install flatpak and flatpak-builder
-          sudo apt-get install -y flatpak flatpak-builder
-          
-          # Add Flathub repository with user permissions
-          flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          
-          # Create flatpak manifest
-          mkdir -p flatpak
-          cat > flatpak/com.example.energy_pacing.json << EOF
-          {
-              "app-id": "com.example.energy_pacing",
-              "runtime": "org.freedesktop.Platform",
-              "runtime-version": "22.08",
-              "sdk": "org.freedesktop.Sdk",
-              "command": "energy_pacing",
-              "finish-args": [
-                  "--share=network",
-                  "--share=ipc",
-                  "--socket=x11",
-                  "--device=dri"
-              ],
-              "modules": [
-                  {
-                      "name": "energy_pacing",
-                      "buildsystem": "simple",
-                      "build-commands": [
-                          "mkdir -p /app/bin",
-                          "cp -r * /app/bin/"
-                      ],
-                      "sources": [
-                          {
-                              "type": "dir",
-                              "path": "build/linux/x64/release/bundle"
-                          }
-                      ]
-                  }
-              ]
-          }
-          EOF
-          
-          # Build flatpak
-          flatpak-builder --user --repo=repo --force-clean build-dir flatpak/com.example.energy_pacing.json
-          flatpak --user build-bundle repo Pacey.flatpak com.example.energy_pacing
-
       - name: Upload AppImage artifact
         uses: actions/upload-artifact@main
         with:
           name: pacey-linux-appimage
           path: Pacey-x86_64.AppImage
-          retention-days: 30
-
-      - name: Upload Flatpak artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: pacey-linux-flatpak
-          path: Pacey.flatpak
           retention-days: 30
 
   # Build for Android (APK)
