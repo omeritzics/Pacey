@@ -8,10 +8,10 @@
       }
     }
   },
-  "stabilization": "ייצוב",
-  "strengthening": "חיזוק",
-  "expansion": "הרחבה",
-  "currentEnergy": "אנרגיה נוכחית",
+  "stabilization": "התייצבות",
+  "strengthening": "התחזקות",
+  "expansion": "הרחבת היכולות",
+  "currentEnergy": "רמת אנרגיה נוכחית",
   "tasksForEnergy": "משימות עבור {energy} ⚡",
   "@tasksForEnergy": {
     "placeholders": {
