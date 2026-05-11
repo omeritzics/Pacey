@@ -36,6 +36,7 @@
   "settings": "Settings",
   "language": "Language",
   "selectLanguage": "Select Language",
+  "followSystem": "Follow System",
   "p2pSync": "P2P Sync",
   "syncSettings": "Sync Settings",
   "connectionStatus": "Connection Status",

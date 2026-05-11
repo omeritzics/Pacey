@@ -82,6 +82,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get selectLanguage => 'בחר שפה';
 
   @override
+  String get followSystem => 'עקוב אחר המערכת';
+
+  @override
   String get p2pSync => 'סינכרון P2P';
 
   @override

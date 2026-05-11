@@ -236,6 +236,12 @@ abstract class AppLocalizations {
   /// **'Select Language'**
   String get selectLanguage;
 
+  /// No description provided for @followSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow System'**
+  String get followSystem;
+
   /// No description provided for @p2pSync.
   ///
   /// In en, this message translates to:

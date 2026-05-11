@@ -10,7 +10,9 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final localeNotifier = ref.watch(localeProvider.notifier);
     final currentLocale = ref.watch(localeProvider);
+    final effectiveLocale = localeNotifier.getEffectiveLocale();
 
     return Scaffold(
       appBar: AppBar(
@@ -22,18 +24,22 @@ class SettingsPage extends ConsumerWidget {
           ListTile(
             title: Text(l10n.language),
             subtitle: Text(
-              currentLocale.languageCode == 'en' ? 'English' : 'עברית',
+              _getLanguageDisplayText(currentLocale, effectiveLocale, l10n),
             ),
             leading: const Icon(Icons.language),
             trailing: DropdownButton<Locale>(
               value: currentLocale,
-              items: const [
+              items: [
                 DropdownMenuItem(
-                  value: Locale('en'),
+                  value: const Locale('system'),
+                  child: Text(l10n.followSystem),
+                ),
+                DropdownMenuItem(
+                  value: const Locale('en'),
                   child: Text('English'),
                 ),
                 DropdownMenuItem(
-                  value: Locale('he'),
+                  value: const Locale('he'),
                   child: Text('עברית'),
                 ),
               ],
@@ -62,5 +68,14 @@ class SettingsPage extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _getLanguageDisplayText(Locale currentLocale, Locale effectiveLocale, AppLocalizations l10n) {
+    if (currentLocale.languageCode == 'system') {
+      final effectiveLang = effectiveLocale.languageCode == 'en' ? 'English' : 'עברית';
+      return '${l10n.followSystem} ($effectiveLang)';
+    } else {
+      return currentLocale.languageCode == 'en' ? 'English' : 'עברית';
+    }
   }
 }

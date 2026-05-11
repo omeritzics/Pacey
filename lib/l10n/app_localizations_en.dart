@@ -83,6 +83,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectLanguage => 'Select Language';
 
   @override
+  String get followSystem => 'Follow System';
+
+  @override
   String get p2pSync => 'P2P Sync';
 
   @override
