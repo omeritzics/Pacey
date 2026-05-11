@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:energy_pacing/l10n/app_localizations.dart';
 import '../../core/p2p/p2p_sync_provider.dart';
 import 'qr_scanner_screen.dart';
 
@@ -22,13 +23,14 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
   }
 
   Future<void> _scanQRCode() async {
+    final l10n = AppLocalizations.of(context)!;
     // Request camera permission
     final status = await Permission.camera.request();
     if (!status.isGranted) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Camera permission is required to scan QR codes'),
+          SnackBar(
+            content: Text(l10n.cameraPermissionRequired),
             backgroundColor: Colors.red,
           ),
         );
@@ -55,10 +57,11 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
-          title: const Text('Connection Request'),
+          title: Text(l10n.connectionRequest),
           content: Text(
-            'Device $peerId wants to connect with you. Do you want to accept this connection?',
+            l10n.deviceWantsToConnect(peerId),
           ),
           actions: [
             TextButton(
@@ -68,12 +71,12 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                 
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Connection from $peerId rejected'),
+                    content: Text(l10n.connectionRejected(peerId)),
                     backgroundColor: Colors.red,
                   ),
                 );
               },
-              child: const Text('Reject'),
+              child: Text(l10n.reject),
             ),
             TextButton(
               onPressed: () {
@@ -82,12 +85,12 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                 
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Connected to $peerId'),
+                    content: Text(l10n.connectedTo(peerId)),
                     backgroundColor: Colors.green,
                   ),
                 );
               },
-              child: const Text('Accept'),
+              child: Text(l10n.accept),
             ),
           ],
         );
@@ -97,6 +100,7 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final connectionState = ref.watch(p2pConnectionStateProvider);
     final connectedPeers = ref.watch(connectedPeersProvider);
     final localPeerId = ref.watch(localPeerIdProvider);
@@ -110,7 +114,7 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('P2P Sync')),
+      appBar: AppBar(title: Text(l10n.p2pSync)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -123,9 +127,9 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Your Peer ID',
-                      style: TextStyle(
+                    Text(
+                      l10n.yourPeerId,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -165,11 +169,11 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                         ],
                       )
                     else
-                      const Text('Initializing...'),
+                      Text(l10n.initializing),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Share this QR code or ID with other devices to connect',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    Text(
+                      l10n.shareQrCode,
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -184,16 +188,16 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Connection Status',
-                      style: TextStyle(
+                    Text(
+                      l10n.connectionStatus,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
                     connectionState.when(
-                      data: (state) => _buildConnectionStatus(state),
+                      data: (state) => _buildConnectionStatus(state, l10n),
                       loading: () => const CircularProgressIndicator(),
                       error: (error, stack) => Text(
                         'Error: $error',
@@ -213,9 +217,9 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Connect to Peer',
-                      style: TextStyle(
+                    Text(
+                      l10n.connectToPeer,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -223,10 +227,10 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                     const SizedBox(height: 8),
                     TextField(
                       controller: _peerIdController,
-                      decoration: const InputDecoration(
-                        labelText: 'Enter Peer ID',
-                        border: OutlineInputBorder(),
-                        hintText: 'Paste the peer ID here',
+                      decoration: InputDecoration(
+                        labelText: l10n.enterPeerId,
+                        border: const OutlineInputBorder(),
+                        hintText: l10n.pastePeerId,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -242,14 +246,14 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                               }
                             },
                             icon: const Icon(Icons.link),
-                            label: const Text('Connect'),
+                            label: Text(l10n.connect),
                           ),
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton.icon(
                           onPressed: _scanQRCode,
                           icon: const Icon(Icons.qr_code_scanner),
-                          label: const Text('Scan QR'),
+                          label: Text(l10n.scanQr),
                         ),
                       ],
                     ),
@@ -267,7 +271,7 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Connected Peers (${connectedPeers.length})',
+                      '${l10n.connectedPeers} (${connectedPeers.length})',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -275,7 +279,7 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                     ),
                     const SizedBox(height: 8),
                     if (connectedPeers.isEmpty)
-                      const Text('No peers connected')
+                      Text(l10n.noPeersConnected)
                     else
                       ...connectedPeers.map(
                         (peerId) => ListTile(
@@ -284,7 +288,7 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                             peerId,
                             style: const TextStyle(fontFamily: 'monospace'),
                           ),
-                          subtitle: const Text('Connected'),
+                          subtitle: Text(l10n.connectedToP2P),
                           trailing: IconButton(
                             icon: const Icon(Icons.copy),
                             onPressed: () {
@@ -304,7 +308,7 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
     );
   }
 
-  Widget _buildConnectionStatus(P2PConnectionState state) {
+  Widget _buildConnectionStatus(P2PConnectionState state, AppLocalizations l10n) {
     IconData icon;
     Color color;
     String text;
@@ -313,27 +317,27 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
       case P2PConnectionStatus.disconnected:
         icon = Icons.link_off;
         color = Colors.red;
-        text = 'Disconnected';
+        text = l10n.disconnected;
         break;
       case P2PConnectionStatus.connected:
         icon = Icons.link;
         color = Colors.green;
-        text = 'Connected to P2P network';
+        text = l10n.connectedToP2P;
         break;
       case P2PConnectionStatus.peerConnected:
         icon = Icons.device_hub;
         color = Colors.blue;
-        text = 'Peer connected: ${state.peerId}';
+        text = '${l10n.peerConnected}: ${state.peerId}';
         break;
       case P2PConnectionStatus.peerDisconnected:
         icon = Icons.device_hub_outlined;
         color = Colors.orange;
-        text = 'Peer disconnected: ${state.peerId}';
+        text = '${l10n.peerDisconnected}: ${state.peerId}';
         break;
       case P2PConnectionStatus.dataReceived:
         icon = Icons.sync;
         color = Colors.purple;
-        text = 'Syncing data...';
+        text = l10n.syncingData;
         break;
       default:
         icon = Icons.help;
