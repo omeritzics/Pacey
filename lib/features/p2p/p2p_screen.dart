@@ -49,12 +49,65 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
     }
   }
 
+  void _showConnectionDialog(String peerId) {
+    final syncService = ref.read(p2pSyncServiceProvider);
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Connection Request'),
+          content: Text(
+            'Device $peerId wants to connect with you. Do you want to accept this connection?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                syncService.rejectConnection(peerId);
+                
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Connection from $peerId rejected'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              },
+              child: const Text('Reject'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                syncService.acceptConnection(peerId);
+                
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Connected to $peerId'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              child: const Text('Accept'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final connectionState = ref.watch(p2pConnectionStateProvider);
     final connectedPeers = ref.watch(connectedPeersProvider);
     final localPeerId = ref.watch(localPeerIdProvider);
     final syncService = ref.watch(p2pSyncServiceProvider);
+
+    // Handle connection requests
+    ref.listen(p2pConnectionStateProvider, (previous, next) {
+      if (next.value?.status == P2PConnectionStatus.connectionRequest) {
+        _showConnectionDialog(next.value!.peerId!);
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('P2P Sync')),
@@ -95,6 +148,7 @@ class _P2PScreenState extends ConsumerState<P2PScreen> {
                                 version: QrVersions.auto,
                                 size: 200.0,
                                 backgroundColor: Colors.white,
+                                // ignore: deprecated_member_use
                                 foregroundColor: Colors.black,
                               ),
                             ),
