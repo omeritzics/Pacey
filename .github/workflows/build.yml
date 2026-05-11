@@ -55,7 +55,7 @@ jobs:
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
       - name: Setup Xcode
-        uses: maxim-lobanov/setup-xcode@main
+        uses: maxim-lobanov/setup-xcode@master
         with:
           xcode-version: latest-stable
 
@@ -256,7 +256,7 @@ jobs:
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
       - name: Setup Xcode
-        uses: maxim-lobanov/setup-xcode@main
+        uses: maxim-lobanov/setup-xcode@master
         with:
           xcode-version: latest-stable
 
