@@ -160,8 +160,8 @@ jobs:
           # Install flatpak and flatpak-builder
           sudo apt-get install -y flatpak flatpak-builder
           
-          # Add Flathub repository
-          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          # Add Flathub repository with user permissions
+          flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           
           # Create flatpak manifest
           mkdir -p flatpak
@@ -198,8 +198,8 @@ jobs:
           EOF
           
           # Build flatpak
-          flatpak-builder --repo=repo --force-clean build-dir flatpak/com.example.energy_pacing.json
-          flatpak build-bundle repo Pacey.flatpak com.example.energy_pacing
+          flatpak-builder --user --repo=repo --force-clean build-dir flatpak/com.example.energy_pacing.json
+          flatpak --user build-bundle repo Pacey.flatpak com.example.energy_pacing
 
       - name: Upload AppImage artifact
         uses: actions/upload-artifact@main
