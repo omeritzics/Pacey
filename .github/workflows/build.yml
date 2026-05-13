@@ -290,11 +290,16 @@ jobs:
       - name: Build iOS app
         run: flutter build ios --release --no-codesign
 
+      - name: Rename iOS app
+        run: |
+          cd build/ios/iphoneos
+          mv Runner.app Pacey.app
+
       - name: Upload iOS artifact
         uses: actions/upload-artifact@main
         with:
           name: pacey-ios
-          path: build/ios/iphoneos/Runner.app
+          path: build/ios/iphoneos/Pacey.app
           retention-days: 7
 
   # Create release with all artifacts
@@ -332,8 +337,8 @@ jobs:
             artifacts/pacey-windows/pacey.exe
             artifacts/pacey-macos/pacey-macos.zip
             artifacts/pacey-linux-appimage/Pacey-x86_64.AppImage
-            artifacts/pacey-linux-flatpak/Pacey.flatpak
-            artifacts/pacey-android/app-debug.apk
+            artifacts/pacey-android/app-profile.apk
+            artifacts/pacey-ios/Pacey.app
           generate_release_notes: true
           draft: false
           prerelease: false
