@@ -67,6 +67,7 @@ jobs:
   build-windows:
     needs: prepare-build
     runs-on: windows-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Download source artifacts
         uses: actions/download-artifact@main
@@ -102,6 +103,7 @@ jobs:
   build-macos:
     needs: prepare-build
     runs-on: macos-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Download source artifacts
         uses: actions/download-artifact@main
@@ -147,13 +149,21 @@ jobs:
   build-linux:
     needs: prepare-build
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Install Linux dependencies
         run: |
           sudo apt-get update --fix-missing || true
-          sudo apt-get install -y --fix-missing clang cmake ninja-build pkg-config libgtk-3-dev libpng-dev libjpeg-dev libtiff-dev fuse2 libfuse2 || true
+          sudo apt-get install -y --fix-missing clang cmake ninja-build pkg-config libgtk-3-dev libpng-dev libjpeg-dev libtiff-dev fuse2 libfuse2 imagemagick || true
           # Fallback installation if some packages fail
-          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev || sudo apt-get install -y clang cmake ninja-build pkg-config 
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev imagemagick || sudo apt-get install -y clang cmake ninja-build pkg-config imagemagick
+
+      - name: Cache AppImage tool
+        uses: actions/cache@v3
+        with:
+          path: appimagetool-x86_64.AppImage
+          key: appimagetool-${{ hashFiles('**/build.yml') }}
+          restore-keys: appimagetool-
 
       - name: Download source artifacts
         uses: actions/download-artifact@main
@@ -180,9 +190,11 @@ jobs:
 
       - name: Create AppImage
         run: |
-          # Download appimagetool
-          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-          chmod +x appimagetool-x86_64.AppImage
+          # Download appimagetool if not cached
+          if [ ! -f appimagetool-x86_64.AppImage ]; then
+            wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+            chmod +x appimagetool-x86_64.AppImage
+          fi
           
           # Extract AppImage to avoid FUSE issues
           ./appimagetool-x86_64.AppImage --appimage-extract
@@ -217,16 +229,12 @@ jobs:
           EOF
           chmod +x AppImageDir/AppRun
           
-          # Create a simple icon file using ImageMagick if available, otherwise create a minimal PNG
-          if command -v convert &> /dev/null; then
-            convert -size 256x256 xc:blue -fill white -gravity center -pointsize 32 -annotate +0+0 "Pacey" AppImageDir/pacey.png
-          else
-            # Install ImageMagick and create icon
-            sudo apt-get update && sudo apt-get install -y imagemagick
-            convert -size 256x256 xc:blue -fill white -gravity center -pointsize 32 -annotate +0+0 "Pacey" AppImageDir/pacey.png || \
-            # Final fallback: copy AppRun as PNG (will work for AppImageTool even if not a valid image)
-            cp AppImageDir/AppRun AppImageDir/pacey.png
-          fi
+          # Create icon using ImageMagick (now pre-installed)
+          convert -size 256x256 xc:blue -fill white -gravity center -pointsize 32 -annotate +0+0 "Pacey" AppImageDir/pacey.png || \
+          # Fallback: create a simple colored square
+          convert -size 256x256 xc:blue AppImageDir/pacey.png || \
+          # Final fallback: copy AppRun as placeholder
+          cp AppImageDir/AppRun AppImageDir/pacey.png
           
           # Build AppImage using extracted tool
           ./appimagetool/AppRun AppImageDir Pacey-x86_64.AppImage
@@ -270,19 +278,26 @@ jobs:
             .dart_tool
 
       - name: Build Android APK
-        run: flutter build apk --profile --tree-shake-icons --split-debug-info=build/debug-info
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            flutter build apk --debug --tree-shake-icons
+          else
+            flutter build apk --profile --tree-shake-icons --split-debug-info=build/debug-info
+          fi
 
       - name: Upload Android artifact
         uses: actions/upload-artifact@main
         with:
           name: pacey-android
-          path: build/app/outputs/flutter-apk/app-profile.apk
+          path: |
+            ${{ github.event_name == 'pull_request' && 'build/app/outputs/flutter-apk/app-debug.apk' || 'build/app/outputs/flutter-apk/app-profile.apk' }}
           retention-days: 7
 
   # Build for iOS (only on macOS)
   build-ios:
     needs: prepare-build
     runs-on: macos-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Download source artifacts
         uses: actions/download-artifact@main
