@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 import '../../core/backup/backup_provider.dart';
 import '../../core/backup/backup_settings_provider.dart';
 import '../../core/database/database_provider.dart';
@@ -72,9 +71,7 @@ class EnergyLevelNotifier extends Notifier<int> {
 
     state = newLevel;
 
-    final syncId = const Uuid().v4();
     await db.insert('energy_logs', {
-      'sync_id': syncId,
       'level': newLevel,
       'timestamp': now.millisecondsSinceEpoch,
       'updated_at': now.millisecondsSinceEpoch,

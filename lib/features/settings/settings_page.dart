@@ -9,7 +9,6 @@ import '../../core/settings/app_settings_provider.dart';
 import '../backup/data_backup_screen.dart';
 import '../gamification/gamification_provider.dart';
 import '../reminders/reminders_page.dart';
-import '../sync/crdt_sync_screen.dart';
 
 import '../energy/energy_provider.dart';
 import '../tasks/task_provider.dart';
@@ -129,9 +128,7 @@ class SettingsPage extends ConsumerWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const RemindersPage(),
-                ),
+                MaterialPageRoute(builder: (context) => const RemindersPage()),
               );
             },
           ),
@@ -154,9 +151,7 @@ class SettingsPage extends ConsumerWidget {
               subtitle: Text(l10n.startOnStartupDescription),
               value: ref.watch(appSettingsProvider).startOnStartup,
               onChanged: (bool value) {
-                ref
-                    .read(appSettingsProvider.notifier)
-                    .setStartOnStartup(value);
+                ref.read(appSettingsProvider.notifier).setStartOnStartup(value);
               },
               secondary: const Icon(Icons.power_settings_new),
             ),
@@ -174,22 +169,6 @@ class SettingsPage extends ConsumerWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const DataBackupScreen(),
-                ),
-              );
-            },
-          ),
-          const Divider(),
-          // CRDT Sync
-          ListTile(
-            title: Text(l10n.syncData),
-            subtitle: Text(l10n.syncDataDescription),
-            leading: const Icon(Icons.sync),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CrdtSyncScreen(),
                 ),
               );
             },

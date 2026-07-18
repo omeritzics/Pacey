@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 void main() async {
   // Test translation API
-  const text = 'Connected Devices';
+  const text = 'Current energy';
   const targetLang = 'he';
 
   try {

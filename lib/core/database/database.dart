@@ -109,14 +109,12 @@ class Task {
 
 class EnergyLog {
   final int id;
-  final String? syncId;
   final int level;
   final DateTime timestamp;
   final DateTime? updatedAt;
 
   const EnergyLog({
     required this.id,
-    this.syncId,
     required this.level,
     required this.timestamp,
     this.updatedAt,
@@ -125,7 +123,6 @@ class EnergyLog {
   factory EnergyLog.fromMap(Map<String, dynamic> map) {
     return EnergyLog(
       id: map['id'] as int,
-      syncId: map['sync_id'] as String?,
       level: map['level'] as int,
       timestamp: DateTime.fromMillisecondsSinceEpoch(map['timestamp'] as int),
       updatedAt: map['updated_at'] != null
@@ -137,7 +134,6 @@ class EnergyLog {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'sync_id': syncId,
       'level': level,
       'timestamp': timestamp.millisecondsSinceEpoch,
       'updated_at': updatedAt?.millisecondsSinceEpoch,

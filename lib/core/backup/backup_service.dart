@@ -32,7 +32,7 @@ class BackupService {
   Future<String> exportData(AppDatabase appDb) async {
     final db = await appDb.database;
     final tasks = await db.query('tasks');
-    final energyLogs = await db.query('energy_logs');
+    await db.query('energy_logs');
 
     final data = <String, dynamic>{
       'version': backupFormatVersion,
@@ -51,15 +51,6 @@ class BackupService {
           'isCompleted': task.isCompleted,
           'createdAt': task.createdAt.toIso8601String(),
           'updatedAt': (task.updatedAt ?? task.createdAt).toIso8601String(),
-        };
-      }).toList(),
-      'energyLogs': energyLogs.map((row) {
-        final log = EnergyLog.fromMap(row);
-        return {
-          'syncId': log.syncId ?? '',
-          'level': log.level,
-          'timestamp': log.timestamp.toIso8601String(),
-          'updatedAt': (log.updatedAt ?? log.timestamp).toIso8601String(),
         };
       }).toList(),
     };
@@ -198,9 +189,6 @@ class BackupService {
     Map<String, dynamic> logData, {
     required ImportMode mode,
   }) async {
-    final syncId = logData['syncId'] as String?;
-    if (syncId == null || syncId.isEmpty) return false;
-
     final timestampRaw = logData['timestamp'] as String?;
     if (timestampRaw == null) return false;
 
@@ -213,8 +201,6 @@ class BackupService {
     final existing =
         await txn.query(
               'energy_logs',
-              where: 'sync_id = ?',
-              whereArgs: [syncId],
             )
             as List<Map<String, dynamic>>;
 
@@ -230,7 +216,6 @@ class BackupService {
     if (level is! num) return false;
 
     final values = {
-      'sync_id': syncId,
       'level': level.toInt(),
       'timestamp': timestamp.millisecondsSinceEpoch,
       'updated_at': incomingUpdatedAt.millisecondsSinceEpoch,
