@@ -150,17 +150,6 @@ class SettingsPage extends ConsumerWidget {
               ),
             ),
             SwitchListTile(
-              title: Text(l10n.minimizeToTray),
-              subtitle: Text(l10n.minimizeToTrayDescription),
-              value: ref.watch(appSettingsProvider).minimizeToTray,
-              onChanged: (bool value) {
-                ref
-                    .read(appSettingsProvider.notifier)
-                    .setMinimizeToTray(value);
-              },
-              secondary: const Icon(Icons.arrow_downward),
-            ),
-            SwitchListTile(
               title: Text(l10n.startOnStartup),
               subtitle: Text(l10n.startOnStartupDescription),
               value: ref.watch(appSettingsProvider).startOnStartup,

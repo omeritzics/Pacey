@@ -43,7 +43,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editTask => 'Edit Task';
 
   @override
-  String get taskTitle => 'Task Title';
+  String get taskName => 'Task Title';
 
   @override
   String get requiredEnergy => 'Required Energy';
@@ -286,13 +286,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get desktopSettings => 'Desktop Settings';
-
-  @override
-  String get minimizeToTray => 'Minimize to Tray';
-
-  @override
-  String get minimizeToTrayDescription =>
-      'Close window to system tray instead of exiting';
 
   @override
   String get startOnStartup => 'Start Pacey on Startup';

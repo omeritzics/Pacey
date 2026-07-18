@@ -302,7 +302,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               children: [
                 TextField(
                   controller: titleController,
-                  decoration: InputDecoration(labelText: l10n.taskTitle),
+                  decoration: InputDecoration(labelText: l10n.taskName),
                   autofocus: true,
                 ),
                 const SizedBox(height: 16),
@@ -517,7 +517,11 @@ class _EnergySelector extends StatelessWidget {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeInOut,
-                  transform: Matrix4.diagonal3Values(isLit ? 1.1 : 1.0, isLit ? 1.1 : 1.0, 1.0),
+                  transform: Matrix4.diagonal3Values(
+                    isLit ? 1.1 : 1.0,
+                    isLit ? 1.1 : 1.0,
+                    1.0,
+                  ),
                   transformAlignment: Alignment.center,
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 200),
@@ -653,7 +657,7 @@ class _TaskTile extends ConsumerWidget {
               children: [
                 TextField(
                   controller: titleController,
-                  decoration: InputDecoration(labelText: l10n.taskTitle),
+                  decoration: InputDecoration(labelText: l10n.taskName),
                   autofocus: true,
                 ),
                 const SizedBox(height: 16),

@@ -158,11 +158,11 @@ abstract class AppLocalizations {
   /// **'Edit Task'**
   String get editTask;
 
-  /// No description provided for @taskTitle.
+  /// No description provided for @taskName.
   ///
   /// In en, this message translates to:
   /// **'Task Title'**
-  String get taskTitle;
+  String get taskName;
 
   /// No description provided for @requiredEnergy.
   ///
@@ -607,18 +607,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Desktop Settings'**
   String get desktopSettings;
-
-  /// No description provided for @minimizeToTray.
-  ///
-  /// In en, this message translates to:
-  /// **'Minimize to Tray'**
-  String get minimizeToTray;
-
-  /// No description provided for @minimizeToTrayDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Close window to system tray instead of exiting'**
-  String get minimizeToTrayDescription;
 
   /// No description provided for @startOnStartup.
   ///

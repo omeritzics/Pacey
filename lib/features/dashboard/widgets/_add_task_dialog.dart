@@ -46,7 +46,7 @@ class _AddTaskDialogState extends ConsumerState<_AddTaskDialog> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: l10n.taskTitle),
+              decoration: InputDecoration(labelText: l10n.taskName),
               autofocus: true,
             ),
             const SizedBox(height: 16),

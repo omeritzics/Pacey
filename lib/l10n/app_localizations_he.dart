@@ -43,7 +43,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get editTask => 'עריכת משימה';
 
   @override
-  String get taskTitle => 'שם המשימה';
+  String get taskName => 'שם המשימה';
 
   @override
   String get requiredEnergy => 'רמת אנרגיה נדרשת';
@@ -280,13 +280,6 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get desktopSettings => 'הגדרות שולחן עבודה';
-
-  @override
-  String get minimizeToTray => 'מזעור למגש המערכת';
-
-  @override
-  String get minimizeToTrayDescription =>
-      'סגירת החלון תמזער אותו למגש המערכת במקום לצאת';
 
   @override
   String get startOnStartup => 'הפעלת Pacey עם עליית המחשב';
