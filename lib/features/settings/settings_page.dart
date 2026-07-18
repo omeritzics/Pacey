@@ -146,15 +146,6 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
             ),
-            SwitchListTile(
-              title: Text(l10n.startOnStartup),
-              subtitle: Text(l10n.startOnStartupDescription),
-              value: ref.watch(appSettingsProvider).startOnStartup,
-              onChanged: (bool value) {
-                ref.read(appSettingsProvider.notifier).setStartOnStartup(value);
-              },
-              secondary: const Icon(Icons.power_settings_new),
-            ),
             const Divider(),
           ],
 

@@ -1,28 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:io' show Platform;
-import 'package:pacey/core/desktop/desktop_startup_manager.dart';
 import '../backup/backup_settings_provider.dart';
 
 class AppSettings {
   final bool hideCompletedTasks;
   final bool hideUnavailableTasks;
-  final bool startOnStartup;
 
   const AppSettings({
     this.hideCompletedTasks = true,
     this.hideUnavailableTasks = true,
-    this.startOnStartup = false,
   });
 
   AppSettings copyWith({
     bool? hideCompletedTasks,
     bool? hideUnavailableTasks,
-    bool? startOnStartup,
   }) {
     return AppSettings(
       hideCompletedTasks: hideCompletedTasks ?? this.hideCompletedTasks,
       hideUnavailableTasks: hideUnavailableTasks ?? this.hideUnavailableTasks,
-      startOnStartup: startOnStartup ?? this.startOnStartup,
     );
   }
 }
@@ -30,15 +24,12 @@ class AppSettings {
 class AppSettingsNotifier extends Notifier<AppSettings> {
   static const _keyHideCompleted = 'hideCompletedTasks';
   static const _keyHideUnavailable = 'hideUnavailableTasks';
-  static const _keyStartOnStartup = 'startOnStartup';
-
   @override
   AppSettings build() {
     final prefs = ref.watch(sharedPreferencesProvider);
     return AppSettings(
       hideCompletedTasks: prefs.getBool(_keyHideCompleted) ?? true,
       hideUnavailableTasks: prefs.getBool(_keyHideUnavailable) ?? true,
-      startOnStartup: prefs.getBool(_keyStartOnStartup) ?? false,
     );
   }
 
@@ -52,17 +43,6 @@ class AppSettingsNotifier extends Notifier<AppSettings> {
     final prefs = ref.read(sharedPreferencesProvider);
     await prefs.setBool(_keyHideUnavailable, value);
     state = state.copyWith(hideUnavailableTasks: value);
-  }
-
-  Future<void> setStartOnStartup(bool value) async {
-    final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.setBool(_keyStartOnStartup, value);
-    state = state.copyWith(startOnStartup: value);
-
-    final isDesktop = (Platform.isWindows || Platform.isLinux || Platform.isMacOS);
-    if (isDesktop) {
-      await DesktopStartupManager.setEnabled(value);
-    }
   }
 }
 

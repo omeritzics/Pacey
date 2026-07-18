@@ -288,13 +288,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get desktopSettings => 'Desktop Settings';
 
   @override
-  String get startOnStartup => 'Start Pacey on Startup';
-
-  @override
-  String get startOnStartupDescription =>
-      'Automatically launch Pacey when you log into your system';
-
-  @override
   String get exportSyncSuccessful => 'Sync data exported successfully.';
 
   @override

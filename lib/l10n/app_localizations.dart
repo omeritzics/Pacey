@@ -608,18 +608,6 @@ abstract class AppLocalizations {
   /// **'Desktop Settings'**
   String get desktopSettings;
 
-  /// No description provided for @startOnStartup.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Pacey on Startup'**
-  String get startOnStartup;
-
-  /// No description provided for @startOnStartupDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Automatically launch Pacey when you log into your system'**
-  String get startOnStartupDescription;
-
   /// No description provided for @exportSyncSuccessful.
   ///
   /// In en, this message translates to:

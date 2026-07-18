@@ -282,13 +282,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get desktopSettings => 'הגדרות שולחן עבודה';
 
   @override
-  String get startOnStartup => 'הפעלת Pacey עם עליית המחשב';
-
-  @override
-  String get startOnStartupDescription =>
-      'הפעלה אוטומטית של Pacey בעת כניסה למערכת';
-
-  @override
   String get exportSyncSuccessful => 'נתוני הסנכרון יוצאו בהצלחה.';
 
   @override
