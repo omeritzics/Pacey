@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/database/database.dart';
-import '../../../l10n/app_localizations.dart';
+import 'package:pacey/core/database/database.dart';
+import 'package:pacey/l10n/app_localizations.dart';
 import '../../tasks/task_provider.dart';
 
 class _AddTaskDialog extends ConsumerStatefulWidget {

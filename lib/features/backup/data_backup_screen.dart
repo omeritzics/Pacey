@@ -206,8 +206,7 @@ class _DataBackupScreenState extends ConsumerState<DataBackupScreen> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    final directory = await FilePicker
-                        .getDirectoryPath();
+                    final directory = await FilePicker.getDirectoryPath();
                     if (directory != null) {
                       final path = '$directory/pacey_auto_backup.json';
                       await ref
@@ -250,8 +249,7 @@ class _DataBackupScreenState extends ConsumerState<DataBackupScreen> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    final directory = await FilePicker
-                        .getDirectoryPath();
+                    final directory = await FilePicker.getDirectoryPath();
                     if (directory != null) {
                       final path = '$directory/pacey_auto_backup.json';
                       await ref
