@@ -62,8 +62,7 @@ import 'app_localizations_he.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,8 +70,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -84,18 +82,17 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('he'),
+    Locale('he')
   ];
 
   /// No description provided for @appTitle.
@@ -548,60 +545,6 @@ abstract class AppLocalizations {
   /// **'Data has been reset successfully'**
   String get dataResetSuccessful;
 
-  /// No description provided for @reminders.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminders'**
-  String get reminders;
-
-  /// No description provided for @remindersDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage reminders to log your energy amounts'**
-  String get remindersDescription;
-
-  /// No description provided for @morningReminder.
-  ///
-  /// In en, this message translates to:
-  /// **'Morning Reminder'**
-  String get morningReminder;
-
-  /// No description provided for @morningReminderDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminder to log morning energy level'**
-  String get morningReminderDescription;
-
-  /// No description provided for @afternoonReminder.
-  ///
-  /// In en, this message translates to:
-  /// **'Afternoon Reminder'**
-  String get afternoonReminder;
-
-  /// No description provided for @afternoonReminderDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminder to log afternoon energy level'**
-  String get afternoonReminderDescription;
-
-  /// No description provided for @eveningReminder.
-  ///
-  /// In en, this message translates to:
-  /// **'Evening Reminder'**
-  String get eveningReminder;
-
-  /// No description provided for @eveningReminderDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminder to log evening energy level'**
-  String get eveningReminderDescription;
-
-  /// No description provided for @reminderTime.
-  ///
-  /// In en, this message translates to:
-  /// **'Time'**
-  String get reminderTime;
-
   /// No description provided for @exportSyncSuccessful.
   ///
   /// In en, this message translates to:
@@ -627,8 +570,7 @@ abstract class AppLocalizations {
   String get importSyncFailed;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -637,26 +579,25 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'he'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'he'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return AppLocalizationsEn();
-    case 'he':
-      return AppLocalizationsHe();
+    case 'en': return AppLocalizationsEn();
+    case 'he': return AppLocalizationsHe();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

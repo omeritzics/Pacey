@@ -67,8 +67,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get repeatCadence => 'חזרה';
 
   @override
-  String get repeatCadenceHint =>
-      'באיזו תדירות ניתן לסיים את המשימה שוב לאחר השלמה.';
+  String get repeatCadenceHint => 'באיזו תדירות ניתן לסיים את המשימה שוב לאחר השלמה.';
 
   @override
   String get repeatOff => 'ללא חזרה';
@@ -133,8 +132,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get aboutSubtitle => 'רישיונות והצהרות קוד פתוח';
 
   @override
-  String get aboutApplicationLegalese =>
-      'כל הזכויות שמורות© 2026 עומר א״ש (‎@omeritzics)';
+  String get aboutApplicationLegalese => 'כל הזכויות שמורות© 2026 עומר א״ש (‎@omeritzics)';
 
   @override
   String get language => 'שפה';
@@ -155,22 +153,19 @@ class AppLocalizationsHe extends AppLocalizations {
   String get importExport => 'ייבוא / ייצוא';
 
   @override
-  String get importExportDescription =>
-      'גיבוי משימות, יומן אנרגיה והתקדמות לקובץ JSON, או שחזור מגיבוי.';
+  String get importExportDescription => 'גיבוי משימות, יומן אנרגיה והתקדמות לקובץ JSON, או שחזור מגיבוי.';
 
   @override
   String get hideCompletedTasks => 'הסתרת משימות שהושלמו';
 
   @override
-  String get hideCompletedTasksDescription =>
-      'הימנעות מהצגת משימות שהושלמו בלוח המחוונים';
+  String get hideCompletedTasksDescription => 'הימנעות מהצגת משימות שהושלמו בלוח המחוונים';
 
   @override
   String get hideUnavailableTasks => 'הסתרת משימות שאינן זמינות';
 
   @override
-  String get hideUnavailableTasksDescription =>
-      'הימנעות מהצגת משימות חוזרות של יום אחר';
+  String get hideUnavailableTasksDescription => 'הימנעות מהצגת משימות חוזרות של יום אחר';
 
   @override
   String get repeatDays => 'ימים לחזרה';
@@ -182,15 +177,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get autoExport => 'ייצוא אוטומטי';
 
   @override
-  String get autoExportDescription =>
-      'ייצוא קובץ גיבוי אוטומטי בעת שינוי נתונים';
+  String get autoExportDescription => 'ייצוא קובץ גיבוי אוטומטי בעת שינוי נתונים';
 
   @override
   String get autoImport => 'ייבוא אוטומטי';
 
   @override
-  String get autoImportDescription =>
-      'ייבוא נתונים מקובץ גיבוי באופן אוטומטי בעת פתיחת היישום';
+  String get autoImportDescription => 'ייבוא נתונים מקובץ גיבוי באופן אוטומטי בעת פתיחת היישום';
 
   @override
   String get selectDirectory => 'בחירת תיקייה';
@@ -205,8 +198,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get importData => 'ייבוא נתונים';
 
   @override
-  String get importModeDescription =>
-      'מיזוג שומר על הנתונים המקומיים ומשלב עם הגיבוי. החלפה מוחקת את כל הנתונים המקומיים לפני הייבוא.';
+  String get importModeDescription => 'מיזוג שומר על הנתונים המקומיים ומשלב עם הגיבוי. החלפה מוחקת את כל הנתונים המקומיים לפני הייבוא.';
 
   @override
   String get importMerge => 'מיזוג';
@@ -241,42 +233,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get confirmReset => 'לאפס את כל הנתונים?';
 
   @override
-  String get confirmResetMessage =>
-      'פעולה זו תמחק לצמיתות את כל הנתונים שלך. לא ניתן לבטל פעולה זו.';
+  String get confirmResetMessage => 'פעולה זו תמחק לצמיתות את כל הנתונים שלך. לא ניתן לבטל פעולה זו.';
 
   @override
   String get reset => 'איפוס';
 
   @override
   String get dataResetSuccessful => 'הנתונים אופסו בהצלחה';
-
-  @override
-  String get reminders => 'תזכורות';
-
-  @override
-  String get remindersDescription => 'ניהול תזכורות להזנת רמות האנרגיה שלך';
-
-  @override
-  String get morningReminder => 'תזכורת בוקר';
-
-  @override
-  String get morningReminderDescription => 'תזכורת לתיעוד רמת האנרגיה בבוקר';
-
-  @override
-  String get afternoonReminder => 'תזכורת צהריים';
-
-  @override
-  String get afternoonReminderDescription =>
-      'תזכורת לתיעוד רמת האנרגיה בצהריים';
-
-  @override
-  String get eveningReminder => 'תזכורת ערב';
-
-  @override
-  String get eveningReminderDescription => 'תזכורת לתיעוד רמת האנרגיה בערב';
-
-  @override
-  String get reminderTime => 'שעה';
 
   @override
   String get exportSyncSuccessful => 'נתוני הסנכרון יוצאו בהצלחה.';

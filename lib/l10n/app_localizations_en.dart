@@ -67,8 +67,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get repeatCadence => 'Repeat';
 
   @override
-  String get repeatCadenceHint =>
-      'How often this task can be completed again after you finish it.';
+  String get repeatCadenceHint => 'How often this task can be completed again after you finish it.';
 
   @override
   String get repeatOff => 'Does not repeat';
@@ -94,8 +93,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
-  String get alreadyLogged =>
-      'You have already logged your energy for this time block.';
+  String get alreadyLogged => 'You have already logged your energy for this time block.';
 
   @override
   String get history => 'History';
@@ -134,8 +132,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutSubtitle => 'Licenses and open source notices';
 
   @override
-  String get aboutApplicationLegalese =>
-      'Copyright © 2026 Omer I.S. (@omeritzics)';
+  String get aboutApplicationLegalese => 'Copyright © 2026 Omer I.S. (@omeritzics)';
 
   @override
   String get language => 'Language';
@@ -156,22 +153,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importExport => 'Import / Export';
 
   @override
-  String get importExportDescription =>
-      'Back up your tasks, energy logs, and progress to a JSON file, or restore from a backup.';
+  String get importExportDescription => 'Back up your tasks, energy logs, and progress to a JSON file, or restore from a backup.';
 
   @override
   String get hideCompletedTasks => 'Hide completed tasks';
 
   @override
-  String get hideCompletedTasksDescription =>
-      'Do not show completed tasks on the dashboard';
+  String get hideCompletedTasksDescription => 'Do not show completed tasks on the dashboard';
 
   @override
   String get hideUnavailableTasks => 'Hide unavailable tasks';
 
   @override
-  String get hideUnavailableTasksDescription =>
-      'Do not show repeating tasks of another day';
+  String get hideUnavailableTasksDescription => 'Do not show repeating tasks of another day';
 
   @override
   String get repeatDays => 'Repeat Days';
@@ -183,15 +177,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoExport => 'Auto-Export';
 
   @override
-  String get autoExportDescription =>
-      'Automatically export a backup file when data changes';
+  String get autoExportDescription => 'Automatically export a backup file when data changes';
 
   @override
   String get autoImport => 'Auto-Import';
 
   @override
-  String get autoImportDescription =>
-      'Automatically import data from a backup file when the app is opened';
+  String get autoImportDescription => 'Automatically import data from a backup file when the app is opened';
 
   @override
   String get selectDirectory => 'Select Directory';
@@ -206,8 +198,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importData => 'Import data';
 
   @override
-  String get importModeDescription =>
-      'Merge keeps your existing data and combines it with the backup. Replace deletes all local data before importing.';
+  String get importModeDescription => 'Merge keeps your existing data and combines it with the backup. Replace deletes all local data before importing.';
 
   @override
   String get importMerge => 'Merge';
@@ -222,8 +213,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportSuccessful => 'Data exported successfully.';
 
   @override
-  String get importFailed =>
-      'Import failed. Please check the file and try again.';
+  String get importFailed => 'Import failed. Please check the file and try again.';
 
   @override
   String importSuccessful(int tasks, int logs) {
@@ -237,52 +227,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetData => 'Reset Data';
 
   @override
-  String get resetDataDescription =>
-      'Delete all your tasks, logs, and statistics';
+  String get resetDataDescription => 'Delete all your tasks, logs, and statistics';
 
   @override
   String get confirmReset => 'Reset All Data?';
 
   @override
-  String get confirmResetMessage =>
-      'This will permanently delete all your data. This action cannot be undone.';
+  String get confirmResetMessage => 'This will permanently delete all your data. This action cannot be undone.';
 
   @override
   String get reset => 'Reset';
 
   @override
   String get dataResetSuccessful => 'Data has been reset successfully';
-
-  @override
-  String get reminders => 'Reminders';
-
-  @override
-  String get remindersDescription =>
-      'Manage reminders to log your energy amounts';
-
-  @override
-  String get morningReminder => 'Morning Reminder';
-
-  @override
-  String get morningReminderDescription =>
-      'Reminder to log morning energy level';
-
-  @override
-  String get afternoonReminder => 'Afternoon Reminder';
-
-  @override
-  String get afternoonReminderDescription =>
-      'Reminder to log afternoon energy level';
-
-  @override
-  String get eveningReminder => 'Evening Reminder';
-
-  @override
-  String get eveningReminderDescription =>
-      'Reminder to log evening energy level';
-
-  @override
-  String get reminderTime => 'Time';
 
   @override
   String get exportSyncSuccessful => 'Sync data exported successfully.';
@@ -294,6 +251,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importSyncSuccessful => 'Sync data imported successfully.';
 
   @override
-  String get importSyncFailed =>
-      'Import failed. Please check the file and try again.';
+  String get importSyncFailed => 'Import failed. Please check the file and try again.';
 }
