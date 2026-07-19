@@ -1,4 +1,3 @@
-import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pacey/l10n/app_localizations.dart';
@@ -133,21 +132,6 @@ class SettingsPage extends ConsumerWidget {
             },
           ),
           const Divider(),
-
-          // Desktop Settings Section
-          if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) ...[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: Text(
-                l10n.desktopSettings,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const Divider(),
-          ],
 
           // Data backup
           ListTile(

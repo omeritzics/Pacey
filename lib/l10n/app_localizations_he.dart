@@ -279,15 +279,14 @@ class AppLocalizationsHe extends AppLocalizations {
   String get reminderTime => 'שעה';
 
   @override
-  String get desktopSettings => 'הגדרות שולחן עבודה';
-
-  @override
   String get exportSyncSuccessful => 'נתוני הסנכרון יוצאו בהצלחה.';
 
   @override
   String get exportSyncFailed => 'הייצוא נכשל. נא לנסות שוב.';
 
+  @override
   String get importSyncSuccessful => 'נתוני הסנכרון יובאו בהצלחה.';
 
+  @override
   String get importSyncFailed => 'הייבוא נכשל. נא לבדוק את הקובץ ולנסות שוב.';
 }

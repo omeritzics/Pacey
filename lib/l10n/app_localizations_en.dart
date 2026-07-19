@@ -285,16 +285,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reminderTime => 'Time';
 
   @override
-  String get desktopSettings => 'Desktop Settings';
-
-  @override
   String get exportSyncSuccessful => 'Sync data exported successfully.';
 
   @override
   String get exportSyncFailed => 'Export failed. Please try again.';
 
+  @override
   String get importSyncSuccessful => 'Sync data imported successfully.';
 
+  @override
   String get importSyncFailed =>
       'Import failed. Please check the file and try again.';
 }

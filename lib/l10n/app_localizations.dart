@@ -602,12 +602,6 @@ abstract class AppLocalizations {
   /// **'Time'**
   String get reminderTime;
 
-  /// No description provided for @desktopSettings.
-  ///
-  /// In en, this message translates to:
-  /// **'Desktop Settings'**
-  String get desktopSettings;
-
   /// No description provided for @exportSyncSuccessful.
   ///
   /// In en, this message translates to:
@@ -624,6 +618,13 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Sync data imported successfully.'**
+  String get importSyncSuccessful;
+
+  /// No description provided for @importSyncFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed. Please check the file and try again.'**
+  String get importSyncFailed;
 }
 
 class _AppLocalizationsDelegate
