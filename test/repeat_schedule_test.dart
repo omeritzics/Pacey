@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pacey/features/tasks/repeat_schedule.dart';
+import 'package:pacey/providers/task_provider.dart';
 
 void main() {
   group('nextBoundaryAfterCompletion', () {

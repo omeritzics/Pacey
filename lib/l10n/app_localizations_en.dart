@@ -162,12 +162,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hideCompletedTasksDescription => 'Do not show completed tasks on the dashboard';
 
   @override
-  String get hideUnavailableTasks => 'Hide unavailable tasks';
-
-  @override
-  String get hideUnavailableTasksDescription => 'Do not show repeating tasks of another day';
-
-  @override
   String get repeatDays => 'Repeat Days';
 
   @override

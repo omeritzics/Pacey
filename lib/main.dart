@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pacey/providers/settings_provider.dart';
 import 'package:pacey/l10n/app_localizations.dart';
-import 'package:pacey/core/localization/locale_provider.dart';
-import 'package:pacey/core/theme/theme_provider.dart';
+import 'package:pacey/providers/locale_provider.dart';
+import 'package:pacey/providers/theme_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'core/backup/backup_settings_provider.dart';
-import 'features/dashboard/dashboard_page.dart';
+import 'pages/dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,9 +16,7 @@ void main() async {
 
   runApp(
     ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-      ],
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
       child: const EnergyPacingApp(),
     ),
   );

@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-import '../../core/backup/backup_settings_provider.dart';
-import '../../core/settings/app_settings_provider.dart';
-import '../../core/backup/backup_provider.dart';
-import '../../core/database/database_provider.dart';
-import '../../core/database/database.dart';
-import '../energy/energy_provider.dart';
-import '../gamification/gamification_provider.dart';
-import 'repeat_schedule.dart';
+import 'settings_provider.dart';
+import 'backup_provider.dart';
+import 'database_provider.dart';
+import '../database.dart';
+import 'energy_provider.dart';
+import 'gamification_provider.dart';
 
 /// Fetches the tasks table from the database on-demand.
 final tasksProvider = FutureProvider<List<Task>>((ref) async {
@@ -30,10 +28,9 @@ final filteredTasksProvider = Provider<List<Task>>((ref) {
     if (hideCompleted && task.isCompleted) {
       return false;
     }
-    final now = DateTime.now();
     if (hideUnavailable &&
         task.nextAllowedCompletionAt != null &&
-        now.isBefore(task.nextAllowedCompletionAt!)) {
+        DateTime.now().isBefore(task.nextAllowedCompletionAt!)) {
       return false;
     }
     return task.isCompleted || task.requiredEnergy <= energyLevel;
@@ -71,20 +68,20 @@ class TaskActions {
     final db = await _ref.read(databaseProvider).database;
 
     final taskId = _uuid.v4();
-    final now = DateTime.now();
-    final p = _clampPriority(priority);
-    final r = _clampRepeatInterval(repeatInterval);
+    _clampRepeatInterval(repeatInterval);
 
     await db.insert('tasks', {
       'id': taskId,
       'title': title,
       'required_energy': requiredEnergy,
-      'priority': p,
-      'repeat_interval': r,
+      'priority': _clampPriority(priority),
+      'repeat_interval': _clampRepeatInterval(repeatInterval),
       'is_completed': 0,
-      'updated_at': now.millisecondsSinceEpoch,
-      'created_at': now.millisecondsSinceEpoch,
-      'repeat_days': r == 2 ? repeatDays : null,
+      'updated_at': DateTime.now().millisecondsSinceEpoch,
+      'created_at': DateTime.now().millisecondsSinceEpoch,
+      'repeat_days': _clampRepeatInterval(repeatInterval) == 2
+          ? repeatDays
+          : null,
     });
 
     _ref.invalidate(tasksProvider);
@@ -261,4 +258,67 @@ class TaskActions {
           );
     }
   }
+}
+
+/// Next moment the user may complete a repeating task again (local midnight rules).
+/// Returns `null` when [repeatInterval] is 0 (no repeat) or unknown.
+DateTime? nextBoundaryAfterCompletion(
+  DateTime now,
+  int repeatInterval, {
+  String? repeatDays,
+}) {
+  final start = DateTime(now.year, now.month, now.day);
+  switch (repeatInterval) {
+    case 0:
+      return null;
+    case 1:
+      return start.add(const Duration(days: 1));
+    case 2:
+      if (repeatDays != null && repeatDays.isNotEmpty) {
+        final days = repeatDays
+            .split(',')
+            .map((s) => int.tryParse(s.trim()))
+            .whereType<int>()
+            .toList();
+        if (days.isNotEmpty) {
+          for (int i = 1; i <= 7; i++) {
+            final nextDay = start.add(Duration(days: i));
+            if (days.contains(nextDay.weekday)) {
+              return nextDay;
+            }
+          }
+        }
+      }
+      return start.add(const Duration(days: 7));
+    case 3:
+      return _addOneCalendarMonthStartOfDay(start);
+    default:
+      return null;
+  }
+}
+
+DateTime _addOneCalendarMonthStartOfDay(DateTime startOfDay) {
+  var y = startOfDay.year;
+  var m = startOfDay.month + 1;
+  if (m > 12) {
+    m = 1;
+    y++;
+  }
+  final lastDayOfTargetMonth = DateTime(y, m + 1, 0).day;
+  final day = startOfDay.day > lastDayOfTargetMonth
+      ? lastDayOfTargetMonth
+      : startOfDay.day;
+  return DateTime(y, m, day);
+}
+
+bool isTaskCompletionGated({
+  required bool isCompleted,
+  required int repeatInterval,
+  required DateTime? nextAllowedCompletionAt,
+  required DateTime now,
+}) {
+  if (isCompleted) return false;
+  if (repeatInterval == 0) return false;
+  final t = nextAllowedCompletionAt;
+  return t != null && now.isBefore(t);
 }

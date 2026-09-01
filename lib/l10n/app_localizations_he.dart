@@ -162,12 +162,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get hideCompletedTasksDescription => 'הימנעות מהצגת משימות שהושלמו בלוח המחוונים';
 
   @override
-  String get hideUnavailableTasks => 'הסתרת משימות שאינן זמינות';
-
-  @override
-  String get hideUnavailableTasksDescription => 'הימנעות מהצגת משימות חוזרות של יום אחר';
-
-  @override
   String get repeatDays => 'ימים לחזרה';
 
   @override

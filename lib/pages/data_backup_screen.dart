@@ -1,0 +1,268 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pacey/providers/settings_provider.dart';
+import 'package:pacey/l10n/app_localizations.dart';
+
+import '../providers/backup_provider.dart';
+import '../providers/database_provider.dart';
+import '../providers/energy_provider.dart';
+
+import '../providers/task_provider.dart';
+
+class DataBackupScreen extends ConsumerStatefulWidget {
+  const DataBackupScreen({super.key});
+
+  @override
+  ConsumerState<DataBackupScreen> createState() => _DataBackupScreenState();
+}
+
+class _DataBackupScreenState extends ConsumerState<DataBackupScreen> {
+  bool _isWorking = false;
+
+  Future<void> _exportData() async {
+    final l10n = AppLocalizations.of(context)!;
+    setState(() => _isWorking = true);
+
+    try {
+      final appDb = ref.read(databaseProvider);
+      final backupService = ref.read(backupServiceProvider);
+      final json = await backupService.exportData(appDb);
+
+      final timestamp = DateTime.now().toUtc().toIso8601String().replaceAll(
+        ':',
+        '-',
+      );
+      final fileName = 'pacey-backup-$timestamp.json';
+
+      final bytes = Uint8List.fromList(utf8.encode(json));
+      final outputFile = await FilePicker.saveFile(
+        dialogTitle: l10n.exportData,
+        fileName: fileName,
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+        bytes: bytes,
+      );
+
+      if (outputFile == null) return;
+
+      if (!Platform.isAndroid && !Platform.isIOS) {
+        final file = File(outputFile);
+        await file.writeAsBytes(bytes);
+      }
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.exportSuccessful)));
+    } on BackupException catch (e) {
+      if (mounted) _showError(e.message);
+    } catch (_) {
+      if (mounted) _showError(l10n.exportFailed);
+    } finally {
+      if (mounted) setState(() => _isWorking = false);
+    }
+  }
+
+  Future<void> _importData() async {
+    final l10n = AppLocalizations.of(context)!;
+    final mode = await _showImportModeDialog();
+    if (mode == null || !mounted) return;
+
+    final result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+    if (result == null || result.files.isEmpty || !mounted) return;
+
+    final file = result.files.first;
+    setState(() => _isWorking = true);
+    try {
+      final bytes = await file.readAsBytes();
+      final jsonString = utf8.decode(bytes);
+
+      final appDb = ref.read(databaseProvider);
+      final backupService = ref.read(backupServiceProvider);
+      final importResult = await backupService.importData(
+        appDb,
+        jsonString,
+        mode: mode,
+      );
+
+      ref.invalidate(energyLevelProvider);
+      ref.invalidate(tasksProvider);
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n.importSuccessful(
+              importResult.tasksImported,
+              importResult.energyLogsImported,
+            ),
+          ),
+        ),
+      );
+    } on BackupException catch (e) {
+      if (mounted) _showError(e.message);
+    } catch (_) {
+      if (mounted) _showError(l10n.importFailed);
+    } finally {
+      if (mounted) setState(() => _isWorking = false);
+    }
+  }
+
+  Future<ImportMode?> _showImportModeDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    return showDialog<ImportMode>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.importData),
+        content: Text(l10n.importModeDescription),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImportMode.merge),
+            child: Text(l10n.importMerge),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImportMode.replace),
+            child: Text(
+              l10n.importReplace,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.importExport)),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Text(
+            l10n.importExportDescription,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 24),
+          FilledButton.icon(
+            onPressed: _isWorking ? null : _exportData,
+            icon: const Icon(Icons.upload_file),
+            label: Text(l10n.exportData),
+          ),
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
+            onPressed: _isWorking ? null : _importData,
+            icon: const Icon(Icons.download),
+            label: Text(l10n.importData),
+          ),
+          if (_isWorking) ...[
+            const SizedBox(height: 24),
+            const Center(child: CircularProgressIndicator()),
+          ],
+          const SizedBox(height: 32),
+          const Divider(),
+          SwitchListTile(
+            title: Text(l10n.autoExport),
+            subtitle: Text(l10n.autoExportDescription),
+            value: ref.watch(backupSettingsProvider).isAutoExportEnabled,
+            onChanged: (value) {
+              ref
+                  .read(backupSettingsProvider.notifier)
+                  .setAutoExportEnabled(value);
+            },
+            contentPadding: EdgeInsets.zero,
+          ),
+          if (ref.watch(backupSettingsProvider).isAutoExportEnabled) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    ref.watch(backupSettingsProvider).autoExportPath ??
+                        'Default Directory',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    final directory = await FilePicker.getDirectoryPath();
+                    if (directory != null) {
+                      final path = '$directory/pacey_auto_backup.json';
+                      await ref
+                          .read(backupSettingsProvider.notifier)
+                          .setAutoExportPath(path);
+                      if (context.mounted) {
+                        ref
+                            .read(backupServiceProvider)
+                            .autoExport(ref.read(databaseProvider), path: path);
+                      }
+                    }
+                  },
+                  child: Text(l10n.selectDirectory),
+                ),
+              ],
+            ),
+          ],
+          const SizedBox(height: 16),
+          SwitchListTile(
+            title: Text(l10n.autoImport),
+            subtitle: Text(l10n.autoImportDescription),
+            value: ref.watch(backupSettingsProvider).isAutoImportEnabled,
+            onChanged: (value) {
+              ref
+                  .read(backupSettingsProvider.notifier)
+                  .setAutoImportEnabled(value);
+            },
+            contentPadding: EdgeInsets.zero,
+          ),
+          if (ref.watch(backupSettingsProvider).isAutoImportEnabled) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    ref.watch(backupSettingsProvider).autoImportPath ??
+                        'Default Directory',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    final directory = await FilePicker.getDirectoryPath();
+                    if (directory != null) {
+                      final path = '$directory/pacey_auto_backup.json';
+                      await ref
+                          .read(backupSettingsProvider.notifier)
+                          .setAutoImportPath(path);
+                    }
+                  },
+                  child: Text(l10n.selectDirectory),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}

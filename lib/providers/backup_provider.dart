@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../core/database/database.dart';
+import '../database.dart';
 
 const int backupFormatVersion = 2;
 
@@ -279,3 +280,7 @@ class BackupService {
     return importData(appDb, jsonString, mode: mode);
   }
 }
+
+final backupServiceProvider = Provider<BackupService>((ref) {
+  return BackupService();
+});

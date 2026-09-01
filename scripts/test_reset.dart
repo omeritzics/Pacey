@@ -1,5 +1,5 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:pacey/core/database/database.dart';
+import 'package:pacey/database.dart';
 
 void main() async {
   sqfliteFfiInit();

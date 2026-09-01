@@ -71,8 +71,6 @@
   "importExportDescription": "גיבוי משימות, יומן אנרגיה והתקדמות לקובץ JSON, או שחזור מגיבוי.",
   "hideCompletedTasks": "הסתרת משימות שהושלמו",
   "hideCompletedTasksDescription": "הימנעות מהצגת משימות שהושלמו בלוח המחוונים",
-  "hideUnavailableTasks": "הסתרת משימות שאינן זמינות",
-  "hideUnavailableTasksDescription": "הימנעות מהצגת משימות חוזרות של יום אחר",
   "repeatDays": "ימים לחזרה",
   "selectWeekDays": "בחירת ימים בשבוע",
   "autoExport": "ייצוא אוטומטי",

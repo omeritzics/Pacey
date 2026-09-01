@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/backup/backup_provider.dart';
-import '../../core/backup/backup_settings_provider.dart';
-import '../../core/database/database_provider.dart';
-import '../../core/database/database.dart';
-import '../gamification/gamification_provider.dart';
+import 'package:pacey/providers/settings_provider.dart';
+import 'backup_provider.dart';
+import 'database_provider.dart';
+import '../database.dart';
+import 'gamification_provider.dart';
 
 final energyLevelProvider = NotifierProvider<EnergyLevelNotifier, int>(() {
   return EnergyLevelNotifier();

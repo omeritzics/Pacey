@@ -389,18 +389,6 @@ abstract class AppLocalizations {
   /// **'Do not show completed tasks on the dashboard'**
   String get hideCompletedTasksDescription;
 
-  /// No description provided for @hideUnavailableTasks.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide unavailable tasks'**
-  String get hideUnavailableTasks;
-
-  /// No description provided for @hideUnavailableTasksDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Do not show repeating tasks of another day'**
-  String get hideUnavailableTasksDescription;
-
   /// No description provided for @repeatDays.
   ///
   /// In en, this message translates to:

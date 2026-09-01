@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/database/database_provider.dart';
-import '../../core/database/database.dart';
+import 'database_provider.dart';
+import '../database.dart';
 
 final pacingStatsProvider = NotifierProvider<PacingStatsNotifier, PacingStats?>(
   () {
